@@ -31,7 +31,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         timer=new Timer(delay,this);
 		timer.start();
 	}
-	
+	/**
+	Effectively paints the JFrame with the colours of the background and the bricks
+	Also sets the borders of the JFrame and when the game is over (with all bricks broken) 
+	*/
 	public void paint(Graphics g)
 	{    		
 		// background
@@ -92,6 +95,10 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         }		
 		g.dispose();
 	}	
+	/**
+	 * This method is used when with the event of the arrow key being pressed to change direction 
+	 * of the paddle
+	 */
 	public void keyPressed(KeyEvent e) 
 	{
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
@@ -139,24 +146,33 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
 	
+	/**
+	 * Method to move the paddle right
+	 */
 	public void moveRight()
 	{
 		play = true;
 		playerX+=20;	
 	}
-	
+	/**
+	 * Method to move the paddle left
+	 */
 	public void moveLeft()
 	{
 		play = true;
 		playerX-=20;	 	
 	}
 	
+	/**
+	 * Method to check if the ballk collides with the brick - disappearing the brick and reversing the 
+	 * direction of the ball (also increasing the velocity)
+	 */
 	public void actionPerformed(ActionEvent e) 
 	{
 		timer.start();
 		if(play)
 		{			
-			if(new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX, 550, 30, 8)))
+			if( new Rectangle(ballposX, ballposY, 20, 20).intersects(new Rectangle(playerX, 550, 30, 8)))
 			{
 				ballYdir = -ballYdir;
 				ballXdir = -2;
