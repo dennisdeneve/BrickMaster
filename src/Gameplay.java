@@ -50,20 +50,20 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 		g.fillRect(0, 0, 692, 3);
 		g.fillRect(691, 0, 3, 592);
 		
-		// the scores 		
+		// the score counter	
 		g.setColor(Color.white);
 		g.setFont(new Font("serif",Font.BOLD, 25));
-		g.drawString(""+score, 590,30);
+		g.drawString("Current Score "+score, 590,30);
 		
 		// the paddle
-		g.setColor(Color.green);
+		g.setColor(Color.blue);
 		g.fillRect(playerX, 550, 100, 8);
 		
 		// the ball
 		g.setColor(Color.yellow);
 		g.fillOval(ballposX, ballposY, 20, 20);
 	
-		// when you won the game
+		// when you won the game and broke all the bricks
 		if(totalBricks <= 0)
 		{
 			 play = false;
@@ -71,14 +71,14 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
      		 ballYdir = 0;
              g.setColor(Color.RED);
              g.setFont(new Font("serif",Font.BOLD, 30));
-             g.drawString("You Won", 260,300);
+             g.drawString("You Won the game and all bricks were broken!", 260,300);
              
              g.setColor(Color.RED);
              g.setFont(new Font("serif",Font.BOLD, 20));           
              g.drawString("Press (Enter) to Restart", 230,350);  
 		}
 		
-		// when you lose the game
+		// when you lose the game - ball falls past the paddle
 		if(ballposY > 570)
         {
 			 play = false;
@@ -87,7 +87,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 			 
              g.setColor(Color.RED);
              g.setFont(new Font("serif",Font.BOLD, 30));
-             g.drawString("Game Over, Final Score: "+score, 190,300);
+             g.drawString("Game Over, Score: "+score, 190,300);
 
              g.setColor(Color.RED);
              g.setFont(new Font("serif",Font.BOLD, 20));           
@@ -97,12 +97,13 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 	}	
 	/**
 	 * This method is used when with the event of the arrow key being pressed to change direction 
-	 * of the paddle
+	 * of the paddle using event listener class with key events
 	 */
 	public void keyPressed(KeyEvent e) 
 	{
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 		{        
+			//if paddle already too far right
 			if(playerX >= 600)
 			{
 				playerX = 600;
@@ -115,6 +116,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 		
 		if (e.getKeyCode() == KeyEvent.VK_LEFT)
 		{          
+			//if paddle already too far left
 			if(playerX < 10)
 			{
 				playerX = 10;
@@ -126,6 +128,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
         }		
 		if (e.getKeyCode() == KeyEvent.VK_ENTER)
 		{          
+			// if boolean play variable is false ie at the start of game when user presses enter key
 			if(!play)
 			{
 				play = true;
@@ -137,14 +140,29 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 				score = 0;
 				totalBricks = 21;
 				map = new MapGenerator(3, 7);
-				
 				repaint();
 			}
-        }		
+
+		}
+
+		// When user presses P, try to pause the game
+		if (e.getKeyCode() == KeyEvent.VK_P){
+			if(!play){
+				play = true;
+			}
+			else{
+				play = false;
+			}
+		}
+			
 	}
 
-	public void keyReleased(KeyEvent e) {}
-	public void keyTyped(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {
+
+	}
+	public void keyTyped(KeyEvent e) {
+
+	}
 	
 	/**
 	 * Method to move the paddle right
