@@ -33,7 +33,8 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 	}
 	/**
 	Effectively paints the JFrame with the colours of the background and the bricks
-	Also sets the borders of the JFrame and when the game is over (with all bricks broken) 
+	Also sets the borders of the JFrame and when the game is over (with all bricks broken).
+	This method is called when game is finished (user won or lost)
 	*/
 	public void paint(Graphics g)
 	{    		
@@ -45,7 +46,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 		map.draw((Graphics2D) g);
 		
 		// borders
-		g.setColor(Color.yellow);
+		g.setColor(Color.BLUE);
 		g.fillRect(0, 0, 3, 592);
 		g.fillRect(0, 0, 692, 3);
 		g.fillRect(691, 0, 3, 592);
@@ -56,7 +57,7 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 		g.drawString("Current Score "+score, 590,30);
 		
 		// the paddle
-		g.setColor(Color.blue);
+		g.setColor(Color.BLUE);
 		g.fillRect(playerX, 550, 100, 8);
 		
 		// the ball
@@ -96,14 +97,14 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 		g.dispose();
 	}	
 	/**
-	 * This method is used when with the event of the arrow key being pressed to change direction 
+	 * This method is used when with the event of the user presses a specified key on the keyboard
 	 * of the paddle using event listener class with key events
 	 */
 	public void keyPressed(KeyEvent e) 
 	{
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT)
 		{        
-			//if paddle already too far right
+			//if paddle already too far right, stays at edge of screen
 			if(playerX >= 600)
 			{
 				playerX = 600;
@@ -147,21 +148,29 @@ public class Gameplay extends JPanel implements KeyListener, ActionListener
 
 		// When user presses P, try to pause the game
 		if (e.getKeyCode() == KeyEvent.VK_P){
-			if(!play){
-				play = true;
+			if(play){
+				play = false;
+				repaint();
 			}
 			else{
-				play = false;
+				play = true;
+				ballposX = 120;
+				ballposY = 350;
+				ballXdir = -1;
+				ballYdir = -2;
+				playerX = 310;
+				//score = 0;
+				//totalBricks = 21;
+				map = new MapGenerator(3, 7);
+				repaint();
 			}
 		}
 			
 	}
 
 	public void keyReleased(KeyEvent e) {
-
 	}
 	public void keyTyped(KeyEvent e) {
-
 	}
 	
 	/**
